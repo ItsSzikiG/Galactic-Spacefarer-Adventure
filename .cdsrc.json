@@ -1,0 +1,19 @@
+{
+  "requires": {
+    "auth": {
+      "kind": "mocked",
+      "users": {
+        "zora": {
+          "password": "cosmos",
+          "roles": ["Commander", "authenticated-user"],
+          "attr": { "planet": "Tatooine" }
+        },
+        "kael": {
+          "password": "cosmos",
+          "roles": ["authenticated-user"],
+          "attr": { "planet": "Naboo" }
+        }
+      }
+    }
+  }
+}
