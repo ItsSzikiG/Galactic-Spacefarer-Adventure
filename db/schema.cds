@@ -3,6 +3,7 @@ using { cuid, managed } from '@sap/cds/common';
 
 entity Spacefarers : cuid, managed {
   name                    : String(100) @mandatory;
+  email                   : String(255) @mandatory @assert.format: '^[^@\s]+@[^@\s]+\.[^@\s]+$';
   originPlanet            : String(50)  @mandatory;
   spacesuitColor          : String(30);
   stardustCollection      : Integer default 1;

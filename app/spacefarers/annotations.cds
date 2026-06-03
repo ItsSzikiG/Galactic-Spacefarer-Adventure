@@ -9,6 +9,10 @@ annotate service.Spacefarers with @(
             },
             {
                 $Type : 'UI.DataField',
+                Value : email,
+            },
+            {
+                $Type : 'UI.DataField',
                 Value : originPlanet,
             },
             {
@@ -66,6 +70,7 @@ annotate service.Spacefarers with @(
 
 annotate service.Spacefarers with {
     name                    @title : 'Name';
+    email                   @title : 'Email';
     originPlanet            @title : 'Origin Planet';
     spacesuitColor          @title : 'Spacesuit Color';
     stardustCollection      @title : 'Stardust Collection';
