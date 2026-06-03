@@ -5,27 +5,22 @@ annotate service.Spacefarers with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'name',
                 Value : name,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'originPlanet',
                 Value : originPlanet,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'spacesuitColor',
                 Value : spacesuitColor,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'stardustCollection',
                 Value : stardustCollection,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'wormholeNavigationSkill',
                 Value : wormholeNavigationSkill,
             },
         ],
@@ -38,34 +33,46 @@ annotate service.Spacefarers with @(
             Target : '@UI.FieldGroup#GeneratedGroup',
         },
     ],
+    UI.HeaderInfo : {
+        $Type : 'UI.HeaderInfoType',
+        TypeName : 'Spacefarer',
+        TypeNamePlural : 'Spacefarers',
+        Title : { Value : name },
+    },
+    UI.SelectionFields : [ originPlanet, spacesuitColor ],
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'name',
             Value : name,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'originPlanet',
             Value : originPlanet,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'spacesuitColor',
             Value : spacesuitColor,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'stardustCollection',
             Value : stardustCollection,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'wormholeNavigationSkill',
             Value : wormholeNavigationSkill,
         },
     ],
 );
+
+annotate service.Spacefarers with {
+    name                    @title : 'Name';
+    originPlanet            @title : 'Origin Planet';
+    spacesuitColor          @title : 'Spacesuit Color';
+    stardustCollection      @title : 'Stardust Collection';
+    wormholeNavigationSkill @title : 'Wormhole Navigation Skill';
+    department              @title : 'Department';
+    position                @title : 'Position';
+};
 
 annotate service.Spacefarers with {
     department @Common.ValueList : {
