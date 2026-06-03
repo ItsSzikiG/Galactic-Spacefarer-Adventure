@@ -1,22 +1,41 @@
-# Getting Started
+# Galactic Spacefarer Adventure
 
-Welcome to your new CAP project.
+A SAP CAP application managing spacefarers across the SAP galaxy. It exposes an OData V4 service with cosmic business logic and a SAP Fiori Elements List Report / Object Page UI.
 
-It contains these folders and files, following our recommended project layout:
+## Stack
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`readme.md` | this getting started guide
+SAP CAP (`@sap/cds` 9) with TypeScript handlers, SQLite (`@cap-js/sqlite`), and SAP Fiori Elements via `cds-plugin-ui5`.
 
-## Next Steps
+## Data Model
 
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start with your domain model, in a CDS file in `db/`
+`Spacefarers` (`cuid`, `managed`): `name`, `email`, `originPlanet`, `spacesuitColor`, `stardustCollection`, `wormholeNavigationSkill`, plus associations to `Departments` and `Positions`. See [db/schema.cds](db/schema.cds).
 
-## Learn More
+## Service
 
-Learn more at <https://cap.cloud.sap>.
+`CosmicService` at `/odata/v4/cosmic/` — see [srv/cosmic-service.cds](srv/cosmic-service.cds):
+
+- `@requires: 'authenticated-user'` — anonymous access rejected.
+- `READ where originPlanet = $user.planet` — users only see spacefarers from their own planet (Planet X cannot read Planet Y).
+- `CREATE/UPDATE/DELETE` restricted to the `Commander` role.
+- `@odata.draft.enabled` — powers the editable Fiori Object Page.
+
+### Event handlers ([srv/cosmic-service.ts](srv/cosmic-service.ts))
+
+- `@Before CREATE` — defaults a missing wormhole skill to 1, rejects a skill outside 0–100, floors negative stardust to 0, and grants a launch bonus (+15 stardust, +10 skill).
+- `@After CREATE` — on transaction commit (`req.on('succeeded')`), sends a cosmic welcome notification to the spacefarer's email (logged locally).
+
+## Running
+
+```sh
+npm install
+npm run watch-spacefarers
+```
+
+Mocked users ([.cdsrc.json](.cdsrc.json), password `cosmos`):
+
+| User | Roles | Planet |
+|---|---|---|
+| `zora` | `Commander`, `authenticated-user` | Tatooine |
+| `kael` | `authenticated-user` | Naboo |
+
+Service: <http://localhost:4004/odata/v4/cosmic/> — App: <http://localhost:4004/galactic.spacefarer.ui.spacefarers/index.html>
