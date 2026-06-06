@@ -14,11 +14,11 @@ service CosmicService {
     { grant: 'READ' },
     { grant: ['CREATE','UPDATE','DELETE'], to: 'Commander' }
   ]
-  entity Departments as projection on ga.Departments;
+  entity Departments as projection on ga.Departments excluding { spacefarers };
 
   @restrict: [
     { grant: 'READ' },
     { grant: ['CREATE','UPDATE','DELETE'], to: 'Commander' }
   ]
-  entity Positions   as projection on ga.Positions;
+  entity Positions   as projection on ga.Positions excluding { spacefarers };
 }
