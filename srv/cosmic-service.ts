@@ -10,17 +10,17 @@ const SKILL_MAX = 100;
 
 export default class CosmicService extends cds.ApplicationService {
   init() {
+    this.before(['CREATE', 'UPDATE'], Spacefarers, (req) => this.validateSkill(req));
+    this.before('SAVE', Spacefarers.drafts, (req) => this.validateSkill(req));
+
     this.before('CREATE', Spacefarers, (req) => {
       const s = req.data as Spacefarer;
 
       if (s.wormholeNavigationSkill == null) s.wormholeNavigationSkill = 1;
-      if (s.wormholeNavigationSkill < SKILL_MIN || s.wormholeNavigationSkill > SKILL_MAX) {
-        return req.reject(400, `Wormhole navigation skill must be between ${SKILL_MIN} and ${SKILL_MAX}.`);
-      }
       if (s.stardustCollection == null || s.stardustCollection < 0) s.stardustCollection = 0;
 
       s.stardustCollection += LAUNCH_STARDUST_BONUS;
-      s.wormholeNavigationSkill += LAUNCH_WORMHOLE_BONUS;
+      s.wormholeNavigationSkill = Math.min(s.wormholeNavigationSkill + LAUNCH_WORMHOLE_BONUS, SKILL_MAX);
     });
 
     this.after('CREATE', Spacefarers, (data, req) => {
@@ -30,6 +30,14 @@ export default class CosmicService extends cds.ApplicationService {
     });
 
     return super.init();
+  }
+
+  private validateSkill(req: cds.Request): void {
+    const skill = (req.data as Spacefarer).wormholeNavigationSkill;
+    if (skill == null) return;
+    if (skill < SKILL_MIN || skill > SKILL_MAX) {
+      req.reject(400, `Wormhole navigation skill must be between ${SKILL_MIN} and ${SKILL_MAX}.`);
+    }
   }
 
   private sendCosmicWelcome(s: Spacefarer): void {
