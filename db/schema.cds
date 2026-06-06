@@ -13,13 +13,13 @@ entity Spacefarers : cuid, managed {
 }
 
 entity Departments : cuid {
-  name        : String(100); @mandatory
+  name        : String(100) @mandatory;
   description : String(200);
   spacefarers : Association to many Spacefarers on spacefarers.department = $self;
 }
 
 entity Positions : cuid {
-  title       : String(100); @mandatory
+  title       : String(100) @mandatory;
   level       : Integer;
   spacefarers : Association to many Spacefarers on spacefarers.position = $self;
 }
